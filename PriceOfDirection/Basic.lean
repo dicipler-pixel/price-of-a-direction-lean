@@ -93,9 +93,9 @@ theorem exchange_symmetry {k : Type*} [Fintype k] (P Q : Matrix k k ℝ) (hP : P
     (h : (Q * P * Q) *ᵥ v = μ • v) :
     ∃ w : k → ℝ, w ≠ 0 ∧ (P * Q * P) *ᵥ w = μ • w := by
   have h1 : Q * P * Q = (Q * P) * (P * Q) := by
-    rw [Matrix.mul_assoc Q P, ← Matrix.mul_assoc P P Q, hP]
+    rw [show (Q * P) * (P * Q) = Q * (P * P) * Q by noncomm_ring, hP]
   have h2 : P * Q * P = (P * Q) * (Q * P) := by
-    rw [Matrix.mul_assoc P Q, ← Matrix.mul_assoc Q Q P, hQ]
+    rw [show (P * Q) * (Q * P) = P * (Q * Q) * P by noncomm_ring, hQ]
   rw [h1] at h
   obtain ⟨hne, hw⟩ := nonzero_eigen_swap (Q * P) (P * Q) μ hμ v hv h
   exact ⟨_, hne, by rw [h2]; exact hw⟩
@@ -116,7 +116,11 @@ theorem K_eigen (b μ δ s : ℝ) (hμ : 0 ≤ μ) (hδ : 0 ≤ δ) (hs : s = 1 
   have hmd : Real.sqrt (μ * δ) = Real.sqrt μ * Real.sqrt δ := Real.sqrt_mul hμ δ
   have hs2 : s ^ 2 = 1 := by rcases hs with rfl | rfl <;> norm_num
   ext i
-  fin_cases i <;> simp [Kmat, mulVec, dotProduct, Fin.sum_univ_two, hmd] <;> nlinarith [hm, hd, hs2]
+  fin_cases i
+  · simp [Kmat, mulVec, dotProduct, Fin.sum_univ_two, hmd]
+    linear_combination (-(s * Real.sqrt δ)) * hm
+  · simp [Kmat, mulVec, dotProduct, Fin.sum_univ_two, hmd]
+    linear_combination (-Real.sqrt μ) * hd + (-(Real.sqrt μ * Real.sqrt δ ^ 2)) * hs2
 
 /-- The spectral projector `R Lᵀ/(L·R)` for the eigenvalue `b + s√(μδ)`. -/
 noncomputable def specProj (μ δ s : ℝ) : Matrix (Fin 2) (Fin 2) ℝ :=
@@ -178,20 +182,20 @@ end Curvature
 /-! ## Proposition B.8: the ratio gate -/
 
 /-- The mean `m = g(I₁+I₂)/2` and discriminant `D = (gΔI/2)² + 1 − e²`. -/
-theorem wall_charpoly (g I₁ I₂ e λ' : ℝ) :
-    (g * I₁ - λ') * (g * I₂ - λ') - (1 + e) * (1 - e) =
-      (λ' - g * (I₁ + I₂) / 2) ^ 2 - ((g * (I₂ - I₁) / 2) ^ 2 + 1 - e ^ 2) := by
+theorem wall_charpoly (g I₁ I₂ e x : ℝ) :
+    (g * I₁ - x) * (g * I₂ - x) - (1 + e) * (1 - e) =
+      (x - g * (I₁ + I₂) / 2) ^ 2 - ((g * (I₂ - I₁) / 2) ^ 2 + 1 - e ^ 2) := by
   ring
 
 /-- **Proposition B.8, reality.** The wall link has a real eigenvalue exactly when
 `D = (gΔI/2)² + 1 − e² ≥ 0`; it then equals `g(I₁+I₂)/2 ± √D`. -/
 theorem wall_real_iff (g I₁ I₂ e : ℝ) :
-    (∃ λ' : ℝ, (g * I₁ - λ') * (g * I₂ - λ') - (1 + e) * (1 - e) = 0) ↔
+    (∃ x : ℝ, (g * I₁ - x) * (g * I₂ - x) - (1 + e) * (1 - e) = 0) ↔
       0 ≤ (g * (I₂ - I₁) / 2) ^ 2 + 1 - e ^ 2 := by
   constructor
-  · rintro ⟨λ', h⟩
+  · rintro ⟨x, h⟩
     rw [wall_charpoly] at h
-    nlinarith [sq_nonneg (λ' - g * (I₁ + I₂) / 2)]
+    nlinarith [sq_nonneg (x - g * (I₁ + I₂) / 2)]
   · intro hD
     refine ⟨g * (I₁ + I₂) / 2 + Real.sqrt ((g * (I₂ - I₁) / 2) ^ 2 + 1 - e ^ 2), ?_⟩
     rw [wall_charpoly]
@@ -203,7 +207,7 @@ theorem wall_real_iff (g I₁ I₂ e : ℝ) :
 /-- **Proposition B.8, complex onset.** The eigenvalues are complex exactly when
 `e² > 1 + (gΔI/2)²`. -/
 theorem wall_complex_iff (g I₁ I₂ e : ℝ) :
-    (¬ ∃ λ' : ℝ, (g * I₁ - λ') * (g * I₂ - λ') - (1 + e) * (1 - e) = 0) ↔
+    (¬ ∃ x : ℝ, (g * I₁ - x) * (g * I₂ - x) - (1 + e) * (1 - e) = 0) ↔
       1 + (g * (I₂ - I₁) / 2) ^ 2 < e ^ 2 := by
   rw [wall_real_iff, not_le]
   constructor <;> intro h <;> linarith
