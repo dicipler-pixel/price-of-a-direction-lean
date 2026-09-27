@@ -198,11 +198,7 @@ theorem wall_real_iff (g I₁ I₂ e : ℝ) :
     nlinarith [sq_nonneg (x - g * (I₁ + I₂) / 2)]
   · intro hD
     refine ⟨g * (I₁ + I₂) / 2 + Real.sqrt ((g * (I₂ - I₁) / 2) ^ 2 + 1 - e ^ 2), ?_⟩
-    rw [wall_charpoly]
-    have := Real.sq_sqrt hD
-    ring_nf
-    ring_nf at this
-    linarith
+    rw [wall_charpoly, add_sub_cancel_left, Real.sq_sqrt hD, sub_self]
 
 /-- **Proposition B.8, complex onset.** The eigenvalues are complex exactly when
 `e² > 1 + (gΔI/2)²`. -/
