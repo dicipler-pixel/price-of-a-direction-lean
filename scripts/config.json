@@ -1,1 +1,1 @@
-{"modules":[{"module":"PriceOfDirection.Basic","path":"PriceOfDirection/Basic.lean"}],"expected_theorems":17,"expected_false_controls":3,"root_imports":["PriceOfDirection.Basic"]}
+{"modules": [{"module": "PriceOfDirection.Basic", "path": "PriceOfDirection/Basic.lean"}, {"module": "PriceOfDirection.GapLaw", "path": "PriceOfDirection/GapLaw.lean"}], "expected_theorems": 21, "expected_false_controls": 4, "root_imports": ["PriceOfDirection.Basic", "PriceOfDirection.GapLaw"]}

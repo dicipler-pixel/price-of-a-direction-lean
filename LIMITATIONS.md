@@ -13,3 +13,9 @@ Lean proves exactly the statements written, under exactly the hypotheses written
   read off its definition.
 * The measured capacities and the numerical scripts of Appendix A are numerical programs, not
   Lean proofs.
+* The gap law (`GapLaw.lean`) is stated for real matrices with `B` symmetric and for the eigenvectors
+  as given. `tail_bound` bounds the total squared overlap by the total squared coupling; it does
+  not assume the families are orthonormal, and the further step to `‖sin Θ‖_F ≤ ‖E‖_F / δ` (via
+  Bessel's inequality for orthonormal families) and the operator-norm form of Davis–Kahan are not
+  proved here. The link between the overlap sum and principal angles is stated in words, not
+  formalized.
