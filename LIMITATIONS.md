@@ -7,6 +7,9 @@ Lean proves exactly the statements written, under exactly the hypotheses written
   contour bound (Theorem B.3), the entropy integral `∫H = π²/3` (Lemma B.5) and the census
   coefficient (Theorem B.6).
 * Theorem B.4's projectors are the explicit rank-one spectral projectors `R Lᵀ/(L·R)`; the Riesz
-  contour definition is not used.
+  contour definition is not used. Their idempotence `P² = P` and the relation `K P = λ P` are
+  not proved as separate lemmas. `specProj_entry_tendsto` is stated for the scalar
+  `μ/(2√(μδ))`, which is, up to the sign `s`, the upper off-diagonal entry of `specProj μ δ s`
+  read off its definition.
 * The measured capacities and the numerical scripts of Appendix A are numerical programs, not
   Lean proofs.

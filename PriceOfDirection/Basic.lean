@@ -9,11 +9,12 @@ results of Lemma 2.1 and Appendix B.
   `spec(QPQ) \ {0} = spec(PQP) \ {0}`.
 * Theorem B.4: `K = [[b, μ], [δ, b]]` has eigenvalues `b ± √(μδ)` with eigenvectors
   `(√μ, ±√δ)`; the two rank-one spectral projectors sum to the identity (the rank-two cluster
-  projector is constant) while their entries grow without bound as `δ → 0⁺`.
+  projector is constant) while their upper off-diagonal entries `±μ/(2√(μδ))` grow without
+  bound in magnitude as `δ → 0⁺`.
 * Proposition B.7: `|Ω| ≤ 2 √(g(V,V) g(W,W) − g(V,W)²)`.
 * Proposition B.8: the wall link `h = [[g I₁, 1 + e], [1 − e, g I₂]]` has eigenvalues
   `g(I₁+I₂)/2 ± √D`, `D = (gΔI/2)² + 1 − e²`, which are real exactly when `D ≥ 0`; with
-  `e = ½ ε g ∂I` the exact onset is `ε* = √(ΔI² + 4/g²)/|∂I|`, tending to `ΔI/|∂I|` as `g → ∞`.
+  `e = ½ ε g ∂I` the exact onset is `ε* = √(ΔI² + 4/g²)/|∂I|`, tending to `|ΔI|/|∂I|` as `g → ∞`.
 -/
 import Mathlib
 
@@ -137,8 +138,9 @@ theorem specProj_sum (μ δ : ℝ) (hμ : 0 < μ) (hδ : 0 < δ) :
   ext i j
   fin_cases i <;> fin_cases j <;> simp [specProj, vecMulVec_apply, hmd] <;> field_simp <;> ring
 
-/-- **Theorem B.4, the rank-one projectors blow up.** The off-diagonal entry
-`μ/(2√(μδ))` of each rank-one projector grows without bound as `δ → 0⁺`. -/
+/-- **Theorem B.4, the rank-one projectors blow up.** The upper off-diagonal entry of
+`specProj μ δ s` is `s · μ/(2√(μδ))` (read off the definition), so it grows without bound in
+magnitude as `δ → 0⁺`. The theorem is stated for `μ/(2√(μδ))`. -/
 theorem specProj_entry_tendsto (μ : ℝ) (hμ : 0 < μ) :
     Tendsto (fun δ => μ / (2 * Real.sqrt (μ * δ))) (𝓝[>] 0) atTop := by
   have h0 : Tendsto (fun δ : ℝ => 2 * Real.sqrt (μ * δ)) (𝓝[>] 0) (𝓝[>] 0) := by
@@ -188,7 +190,8 @@ theorem wall_charpoly (g I₁ I₂ e x : ℝ) :
   ring
 
 /-- **Proposition B.8, reality.** The wall link has a real eigenvalue exactly when
-`D = (gΔI/2)² + 1 − e² ≥ 0`; it then equals `g(I₁+I₂)/2 ± √D`. -/
+`D = (gΔI/2)² + 1 − e² ≥ 0`. The witness is `g(I₁+I₂)/2 + √D`, and `wall_charpoly` writes
+the polynomial as `(x − g(I₁+I₂)/2)² − D`. -/
 theorem wall_real_iff (g I₁ I₂ e : ℝ) :
     (∃ x : ℝ, (g * I₁ - x) * (g * I₂ - x) - (1 + e) * (1 - e) = 0) ↔
       0 ≤ (g * (I₂ - I₁) / 2) ^ 2 + 1 - e ^ 2 := by
@@ -229,7 +232,7 @@ theorem onset_exact (g ΔI dI ε : ℝ) (hg : g ≠ 0) :
     nlinarith
 
 /-- **Proposition B.8, large-gain limit.** The exact onset `√(ΔI² + 4/g²)` tends to `|ΔI|`
-as `g → ∞`: for `gΔI ≫ 1` the onset `ε* ≃ ΔI/|∂I|` no longer depends on `g`. -/
+as `g → ∞`: for `gΔI ≫ 1` the onset `ε* ≃ |ΔI|/|∂I|` no longer depends on `g`. -/
 theorem onset_limit (ΔI : ℝ) :
     Tendsto (fun g : ℝ => Real.sqrt (ΔI ^ 2 + 4 / g ^ 2)) atTop (𝓝 |ΔI|) := by
   have h : Tendsto (fun g : ℝ => ΔI ^ 2 + 4 / g ^ 2) atTop (𝓝 (ΔI ^ 2 + 0)) := by

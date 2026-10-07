@@ -32,10 +32,10 @@ channels are lost while the pair's shared subspace survives.
 | Lemma 2.1 | `Tr(P_u P_v) = (u·v)² = cos²θ` and `½‖P_u − P_v‖²_F = 1 − (u·v)² = sin²θ` for unit directions; distinct trackable channels ⇔ `sin²θ ≥ ε` | `overlap`, `separation`, `trackable_iff` |
 | Lemma 2.1 | Census depth `log(1/sin²δ) = 2 log(1/sin δ)` | `census_depth` |
 | Prop. B.2 | `XY` and `YX` share every nonzero eigenvalue; for projectors, `spec(QPQ) \ {0} ⊆ spec(PQP) \ {0}` (and symmetrically) | `nonzero_eigen_swap`, `exchange_symmetry` |
-| Thm. B.4 | `K = [[b, μ], [δ, b]]` has eigenvalues `b ± √(μδ)` with eigenvectors `(√μ, ±√δ)`; the two rank-one spectral projectors sum to the identity (the rank-two projector is constant) while their entries grow without bound as `δ → 0⁺` | `K_eigen`, `specProj_sum`, `specProj_entry_tendsto` |
-| Prop. B.7 | Metric–curvature inequality `|Ω| ≤ 2√(g(V,V)g(W,W) − g(V,W)²)` | `metric_curvature` |
+| Thm. B.4 | `K = [[b, μ], [δ, b]]` has eigenvalues `b ± √(μδ)` with eigenvectors `(√μ, ±√δ)`; the two rank-one spectral projectors sum to the identity (the rank-two projector is constant) while their upper off-diagonal entries `±μ/(2√(μδ))` grow without bound in magnitude as `δ → 0⁺` | `K_eigen`, `specProj_sum`, `specProj_entry_tendsto` |
+| Prop. B.7 | Metric–curvature inequality `\|Ω\| ≤ 2√(g(V,V)g(W,W) − g(V,W)²)` | `metric_curvature` |
 | Prop. B.8 | Wall link eigenvalues `g(I₁+I₂)/2 ± √D`, `D = (gΔI/2)² + 1 − e²`; real ⇔ `D ≥ 0`; complex ⇔ `e² > 1 + (gΔI/2)²` | `wall_charpoly`, `wall_real_iff`, `wall_complex_iff` |
-| Prop. B.8 | Exact onset: complex ⇔ `ε²∂I² > ΔI² + 4/g²`, and `√(ΔI² + 4/g²) → |ΔI|` as `g → ∞`, so `ε* ≃ ΔI/|∂I|` at large gain | `onset_exact`, `onset_limit` |
+| Prop. B.8 | Exact onset: complex ⇔ `ε²∂I² > ΔI² + 4/g²`, and `√(ΔI² + 4/g²) → \|ΔI\|` as `g → ∞`, so `ε* ≃ \|ΔI\|/\|∂I\|` at large gain | `onset_exact`, `onset_limit` |
 
 The file is [`PriceOfDirection/Basic.lean`](PriceOfDirection/Basic.lean). What is not proved is
 in [`LIMITATIONS.md`](LIMITATIONS.md).
